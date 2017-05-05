@@ -26,9 +26,7 @@ solve (k,xs) = syrup $ g $ splitAt k $ sortBy cmp $ map calc xs
             a = m + cylinder (last ys)
             m = maximum $ map circle ys
 
-byLines f = interact $ unlines . f . lines
-
-printCase (i,x) = concat ["Case #",show i,": ", printf "%f" a]
+showCase (i,x) = concat ["Case #",show i,": ", printf "%f" a]
   where a = pi * (fromIntegral x :: Double)
 
 parse [] = []
@@ -39,5 +37,7 @@ parse (x:xs) = (read k, map g ys) : parse zs
     g = pair . map read . take 2 . words
     pair [a,b] = (a,b)
 
-main = byLines $ map printCase . zip [1..] . map solve . g
+byLines f = interact $ unlines . f . lines
+
+main = byLines $ map showCase . zip [1..] . map solve . g
   where g (l:ls) = take (read l) (parse ls)
