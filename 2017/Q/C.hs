@@ -16,10 +16,12 @@ solve (n,k) = go k (n,1,0)
         g n = (m,m+r-1) where (m,r) = divMod n 2
         (m,r) = divMod n 2
 
-printCase (x,yz) = putStrLn $ concat $ ["Case #",show x,": ",p yz]
+showCase (x,yz) = concat $ ["Case #",show x,": ",p yz]
   where p (y,z) = unwords $ map show [y,z]
 
-main = mapM_ printCase . zip [1..] . map f . g . lines =<< getContents
+byLines f = interact $ unlines . f . lines
+
+main = byLines $ map showCase . zip [1..] . map f . g
   where g (l:ls) = take t ls where t = read l
         f = solve . p . map read . take 2 . words
         p [a,b] = (a,b)

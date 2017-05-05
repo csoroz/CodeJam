@@ -16,10 +16,12 @@ solve k = go 0
 parse :: String -> (Int,String)
 parse = g . take 2 . words where g [xs,k] = (read k, xs)
 
-printCase (i,x) = putStrLn $ concat $ ["Case #",show i,": ",p x]
+showCase (i,x) = concat $ ["Case #",show i,": ",p x]
   where p Nothing = "IMPOSSIBLE"
         p (Just n) = show n
 
-main = mapM_ printCase . zip [1..] . map f . g . lines =<< getContents
-  where f = uncurry solve . parse
-        g (l:ls) = take t ls where t = read l
+byLines f = interact $ unlines . f . lines
+
+main = byLines $ map showCase . zip [1..] . map f . g
+  where g (l:ls) = take t ls where t = read l
+        f = uncurry solve . parse
